@@ -15,13 +15,16 @@ import {
     BarChart3,
     X,
     Activity,
-    Workflow
+    Workflow,
+    Map,
+    Key
 } from 'lucide-react';
 
 const Bookshelf = () => {
     const [selectedApp, setSelectedApp] = useState(null);
     const [viewingApp, setViewingApp] = useState(null);
     const [calendarId, setCalendarId] = useState(localStorage.getItem('googleCalendarId') || '');
+    const [apiKey, setApiKey] = useState(localStorage.getItem('geminiApiKey') || '');
     const [connections, setConnections] = useState(JSON.parse(localStorage.getItem('appConnections') || '{}'));
 
     const containerVariants = {
@@ -40,6 +43,11 @@ const Bookshelf = () => {
     const handleSaveCalendarId = (id) => {
         setCalendarId(id);
         localStorage.setItem('googleCalendarId', id);
+    };
+
+    const handleSaveApiKey = (key) => {
+        setApiKey(key);
+        localStorage.setItem('geminiApiKey', key);
     };
 
     const handleToggleConnection = (appId, target) => {
@@ -65,6 +73,7 @@ const Bookshelf = () => {
 
     const supportApps = [
         { id: 'curriculum', title: '授業づくり', color: '#10b981', icon: BookOpen },
+        { id: 'unit-plan', title: '単元計画', color: '#3b82f6', icon: Map, url: 'https://unit-plan.vercel.app/' },
         { id: 'snapsync', title: 'SnapSync AI', color: '#06b6d4', icon: Zap, url: 'https://snapsync-ai.vercel.app/' },
         { id: 'gradeshare', title: 'GradeShare Pro', color: '#f97316', icon: BarChart3, url: 'https://grade-share-pro-7qcq.vercel.app/' },
         { id: 'tokugaku', title: '自立活動支援', color: '#fbbf24', icon: Activity, url: 'https://tokugaku-tsl3.vercel.app/' },
@@ -108,6 +117,50 @@ const Bookshelf = () => {
                     <br />
                     各モジュールをシームレスに連携し、創造的な教育時間を生み出します。
                 </p>
+
+                {/* API Key Configuration */}
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    style={{ marginTop: '32px', display: 'flex', alignItems: 'center', gap: '16px' }}
+                >
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        background: 'rgba(99, 102, 241, 0.05)',
+                        padding: '12px 24px',
+                        borderRadius: '100px',
+                        border: '1px solid rgba(99, 102, 241, 0.1)',
+                        width: 'fit-content',
+                        transition: 'all 0.3s'
+                    }} className="api-key-input-container">
+                        <Key size={16} color="#6366f1" />
+                        <input
+                            type="password"
+                            placeholder="Gemini API Key..."
+                            value={apiKey}
+                            onChange={(e) => handleSaveApiKey(e.target.value)}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                outline: 'none',
+                                fontSize: '0.85rem',
+                                color: '#001220',
+                                width: '220px',
+                                fontWeight: '600',
+                                fontFamily: 'inherit'
+                            }}
+                        />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: apiKey ? '#10b981' : '#f43f5e' }} />
+                        <span className="mono" style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+                            {apiKey ? 'AI Core Active' : 'AI Core Required'}
+                        </span>
+                    </div>
+                </motion.div>
             </motion.header>
 
             <motion.main
@@ -416,7 +469,7 @@ const Bookshelf = () => {
                         </div>
                         <div style={{ flex: 1, position: 'relative' }}>
                             <iframe
-                                src={viewingApp.url}
+                                src={apiKey ? `${viewingApp.url}${viewingApp.url.includes('?') ? '&' : '?'}apiKey=${encodeURIComponent(apiKey)}` : viewingApp.url}
                                 style={{
                                     width: '100%',
                                     height: '100%',
