@@ -29,6 +29,7 @@ const Bookshelf = () => {
     const [customApps, setCustomApps] = useState(JSON.parse(localStorage.getItem('customApps') || '[]'));
     const [isAddingApp, setIsAddingApp] = useState(false);
     const [newApp, setNewApp] = useState({ title: '', url: '', color: '#6366f1', description: '', inputs: [], outputs: [] });
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -291,6 +292,7 @@ const Bookshelf = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                             <motion.div
                                 whileHover={{ scale: 1.02 }}
+                                onClick={() => setIsSettingsOpen(true)}
                                 className="nova-card"
                                 style={{
                                     flex: 1,
@@ -668,7 +670,98 @@ const Bookshelf = () => {
                 )}
             </AnimatePresence>
 
-            {/* Portal Interaction View */}
+            {/* System Settings Modal */}
+            <AnimatePresence>
+                {isSettingsOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            zIndex: 2500,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: 'rgba(0, 18, 32, 0.7)',
+                            backdropFilter: 'blur(30px)'
+                        }}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, rotateX: 20 }}
+                            animate={{ scale: 1, opacity: 1, rotateX: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, rotateX: 20 }}
+                            className="nova-card"
+                            style={{
+                                width: '90%',
+                                maxWidth: '600px',
+                                borderRadius: '48px',
+                                padding: '64px',
+                                background: '#fff',
+                                border: '1px solid rgba(0,0,0,0.1)'
+                            }}
+                        >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '48px' }}>
+                                <div>
+                                    <div className="mono" style={{ fontSize: '0.7rem', color: '#6366f1', fontWeight: '800', marginBottom: '8px' }}>SYSTEM SETTINGS</div>
+                                    <h2 style={{ fontSize: '2.4rem', fontWeight: '900', color: '#001220' }}>Control Center.</h2>
+                                </div>
+                                <button onClick={() => setIsSettingsOpen(false)} style={{ background: '#f8fafc', border: 'none', width: '48px', height: '48px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                                {/* API Key Status */}
+                                <div style={{ padding: '24px', borderRadius: '24px', background: '#f8fafc', border: '1px solid #f1f5f9' }}>
+                                    <div className="mono" style={{ fontSize: '0.65rem', marginBottom: '12px', color: '#64748b', fontWeight: '800' }}>AI CORE STATUS</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: apiKey ? '#10b981' : '#f43f5e' }} />
+                                        <span style={{ fontWeight: '700', color: '#001220' }}>{apiKey ? 'CONNECTED' : 'NOT CONFIGURED'}</span>
+                                    </div>
+                                    <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '12px', lineHeight: 1.5 }}>
+                                        Gemini APIキーはブラウザのローカルストレージに安全に保存され、AI連携機能に使用されます。
+                                    </p>
+                                </div>
+
+                                {/* Storage Info */}
+                                <div style={{ padding: '24px', borderRadius: '24px', background: '#f8fafc', border: '1px solid #f1f5f9' }}>
+                                    <div className="mono" style={{ fontSize: '0.65rem', marginBottom: '12px', color: '#64748b', fontWeight: '800' }}>LOCAL ARCHIVE</div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                        <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Custom Modules:</span>
+                                        <span style={{ fontWeight: '700' }}>{customApps.length} units</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <span style={{ fontSize: '0.9rem', color: '#64748b' }}>App Connections:</span>
+                                        <span style={{ fontWeight: '700' }}>{Object.keys(connections).length} active</span>
+                                    </div>
+                                </div>
+
+                                {/* Reset Options */}
+                                <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    <button
+                                        onClick={() => {
+                                            if (confirm('すべてのカスタムモジュールと連携設定をリセットしますか？')) {
+                                                localStorage.clear();
+                                                window.location.reload();
+                                            }
+                                        }}
+                                        style={{ width: '100%', padding: '20px', borderRadius: '20px', border: '1px solid #fee2e2', color: '#ef4444', fontWeight: '800', background: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        onMouseEnter={(e) => e.target.style.background = '#fef2f2'}
+                                        onMouseLeave={(e) => e.target.style.background = '#fff'}
+                                    >
+                                        FACTORY RESET SYSTEM
+                                    </button>
+                                    <p style={{ textAlign: 'center', fontSize: '0.75rem', color: '#94a3b8' }}>
+                                        System v5.0.4 "Antigravity" // Build: 2026.02
+                                    </p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <AnimatePresence>
                 {viewingApp && (
                     <motion.div
