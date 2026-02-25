@@ -93,6 +93,7 @@ const Bookshelf = () => {
         { id: 'weekly', title: '週案作成', description: '授業の羅針盤を創り、教育の質を高める', color: '#6366f1', icon: FileText },
         { id: 'progress', title: '進捗管理', description: '学びの歩みを可視化し、最適な導きを支援', color: '#8b5cf6', icon: Clock },
         { id: 'homework', title: '宿題配布', description: '家庭と学校をシームレスに繋ぐ架け橋', color: '#f59e0b', icon: CheckSquare },
+        { id: 'newsletter', title: '学級通信', description: 'にじいろ日記 - 先生の想いを届ける虹の架け橋', color: '#10b981', icon: BookOpen, url: 'https://gakkyuu-tuushin.vercel.app/' },
         { id: 'ocr-sync', title: '出張読取', description: '紙の情報を瞬時にデジタル知財へと変換', color: '#f43f5e', icon: Link2 },
     ];
 
@@ -127,7 +128,7 @@ const Bookshelf = () => {
                         }} className="mono">T-LAB PROJECT</div>
                         <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#cbd5e1' }} />
                         <span className="mono" style={{ fontSize: '0.65rem', fontWeight: '800', color: '#6366f1', textTransform: 'uppercase' }}>
-                            Nova Lab v5.0.4
+                            Nova Lab v5.0.5 (Update: Link Fixes)
                         </span>
                     </div>
 
@@ -397,7 +398,7 @@ const Bookshelf = () => {
 
                             <div style={{ marginBottom: '48px' }}>
                                 <h3 className="mono" style={{ fontSize: '0.8rem', marginBottom: '24px', color: '#64748b', fontWeight: '800' }}>
-                                    // ARCHITECTURE & WORKFLOW
+                                    {"// ARCHITECTURE & WORKFLOW"}
                                 </h3>
 
                                 {selectedApp.isCustom && (selectedApp.description || (selectedApp.inputs?.length > 0) || (selectedApp.outputs?.length > 0)) && (
@@ -420,7 +421,7 @@ const Bookshelf = () => {
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px', marginBottom: '24px' }}>
                                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-end' }}>
                                                     {selectedApp.inputs?.map(id => {
-                                                        const app = [...managementApps, ...supportApps].find(a => a.id === id);
+                                                        const app = [...managementApps, ...supportApps, ...customApps].find(a => a.id === id);
                                                         return app ? <span key={id} style={{ fontSize: '0.7rem', fontWeight: '800', color: app.color, background: `${app.color}10`, padding: '2px 8px', borderRadius: '4px' }}>{app.title}</span> : null;
                                                     })}
                                                 </div>
@@ -431,7 +432,7 @@ const Bookshelf = () => {
                                                 </div>
                                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                                     {selectedApp.outputs?.map(id => {
-                                                        const app = [...managementApps, ...supportApps].find(a => a.id === id);
+                                                        const app = [...managementApps, ...supportApps, ...customApps].find(a => a.id === id);
                                                         return app ? <span key={id} style={{ fontSize: '0.7rem', fontWeight: '800', color: app.color, background: `${app.color}10`, padding: '2px 8px', borderRadius: '4px' }}>{app.title}</span> : null;
                                                     })}
                                                 </div>

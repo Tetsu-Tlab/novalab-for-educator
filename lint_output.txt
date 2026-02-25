@@ -1,0 +1,16 @@
+
+C:\Users\Takizawa Tetsuro\OneDrive\繝・せ繧ｯ繝医ャ繝予Antigravity繝輔か繝ｫ繝\謨吝藤謾ｯ謠ｴ邱丞粋繧ｵ繧､繝・src\App.jsx
+  2:27  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\Takizawa Tetsuro\OneDrive\繝・せ繧ｯ繝医ャ繝予Antigravity繝輔か繝ｫ繝\謨吝藤謾ｯ謠ｴ邱丞粋繧ｵ繧､繝・src\components\Book.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  4:50  error  'Icon' is defined but never used                                               no-unused-vars
+
+C:\Users\Takizawa Tetsuro\OneDrive\繝・せ繧ｯ繝医ャ繝予Antigravity繝輔か繝ｫ繝\謨吝藤謾ｯ謠ｴ邱丞粋繧ｵ繧､繝・src\components\Bookshelf.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\Takizawa Tetsuro\OneDrive\繝・せ繧ｯ繝医ャ繝予Antigravity繝輔か繝ｫ繝\謨吝藤謾ｯ謠ｴ邱丞粋繧ｵ繧､繝・src\components\Calendar.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+笨・5 problems (5 errors, 0 warnings)
+
