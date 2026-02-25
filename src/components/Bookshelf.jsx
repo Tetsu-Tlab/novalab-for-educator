@@ -26,6 +26,9 @@ const Bookshelf = () => {
     const [calendarId, setCalendarId] = useState(localStorage.getItem('googleCalendarId') || '');
     const [apiKey, setApiKey] = useState(localStorage.getItem('geminiApiKey') || '');
     const [connections, setConnections] = useState(JSON.parse(localStorage.getItem('appConnections') || '{}'));
+    const [customApps, setCustomApps] = useState(JSON.parse(localStorage.getItem('customApps') || '[]'));
+    const [isAddingApp, setIsAddingApp] = useState(false);
+    const [newApp, setNewApp] = useState({ title: '', url: '', color: '#6366f1', description: '', inputs: [], outputs: [] });
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -62,6 +65,27 @@ const Bookshelf = () => {
 
         setConnections(newConnections);
         localStorage.setItem('appConnections', JSON.stringify(newConnections));
+    };
+
+    const handleAddApp = () => {
+        if (!newApp.title || !newApp.url) return;
+        const appToAdd = {
+            ...newApp,
+            id: `custom-${Date.now()}`,
+            icon: PlusCircle, // Default icon for custom apps
+            isCustom: true
+        };
+        const updatedApps = [...customApps, appToAdd];
+        setCustomApps(updatedApps);
+        localStorage.setItem('customApps', JSON.stringify(updatedApps));
+        setIsAddingApp(false);
+        setNewApp({ title: '', url: '', color: '#6366f1', description: '', inputs: [], outputs: [] });
+    };
+
+    const handleDeleteApp = (id) => {
+        const updatedApps = customApps.filter(app => app.id !== id);
+        setCustomApps(updatedApps);
+        localStorage.setItem('customApps', JSON.stringify(updatedApps));
     };
 
     const managementApps = [
@@ -214,8 +238,18 @@ const Bookshelf = () => {
                             />
                         ))}
 
+                        {customApps.map(app => (
+                            <Book
+                                key={app.id}
+                                {...app}
+                                icon={app.icon || PlusCircle}
+                                onClick={() => setSelectedApp(app)}
+                            />
+                        ))}
+
                         <motion.div
                             whileHover={{ scale: 1.02, borderColor: '#6366f1' }}
+                            onClick={() => setIsAddingApp(true)}
                             className="nova-card"
                             style={{
                                 minHeight: '220px',
@@ -359,6 +393,52 @@ const Bookshelf = () => {
                                     // WORKFLOW CONFIGURATION
                                 </h3>
 
+                                {selectedApp.isCustom && (selectedApp.description || (selectedApp.inputs?.length > 0) || (selectedApp.outputs?.length > 0)) && (
+                                    <div style={{
+                                        padding: '32px',
+                                        background: 'rgba(99, 102, 241, 0.03)',
+                                        borderRadius: '32px',
+                                        border: '1px solid rgba(99, 102, 241, 0.1)',
+                                        marginBottom: '32px',
+                                        position: 'relative',
+                                        overflow: 'hidden'
+                                    }}>
+                                        <div style={{ position: 'absolute', top: 0, right: 0, width: '100px', height: '100px', background: selectedApp.color, opacity: 0.05, filter: 'blur(30px)' }} />
+
+                                        <div className="mono" style={{ fontSize: '0.65rem', color: selectedApp.color, fontWeight: '800', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <Workflow size={14} /> ARCHITECTURE BLUEPRINT
+                                        </div>
+
+                                        {(selectedApp.inputs?.length > 0 || selectedApp.outputs?.length > 0) && (
+                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px', marginBottom: '24px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-end' }}>
+                                                    {selectedApp.inputs?.map(id => {
+                                                        const app = [...managementApps, ...supportApps].find(a => a.id === id);
+                                                        return app ? <span key={id} style={{ fontSize: '0.7rem', fontWeight: '800', color: app.color, background: `${app.color}10`, padding: '2px 8px', borderRadius: '4px' }}>{app.title}</span> : null;
+                                                    })}
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', color: '#cbd5e1' }}>
+                                                    <div style={{ width: '40px', height: '1px', background: 'currentColor' }} />
+                                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: selectedApp.color }} />
+                                                    <div style={{ width: '40px', height: '1px', background: 'currentColor' }} />
+                                                </div>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                    {selectedApp.outputs?.map(id => {
+                                                        const app = [...managementApps, ...supportApps].find(a => a.id === id);
+                                                        return app ? <span key={id} style={{ fontSize: '0.7rem', fontWeight: '800', color: app.color, background: `${app.color}10`, padding: '2px 8px', borderRadius: '4px' }}>{app.title}</span> : null;
+                                                    })}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {selectedApp.description && (
+                                            <p style={{ fontSize: '0.85rem', color: '#475569', fontWeight: '500', lineHeight: 1.6, textAlign: 'center', fontStyle: 'italic' }}>
+                                                "{selectedApp.description}"
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                     {[
                                         { id: 'weekly', label: '週案作成モジュールとの同期' },
@@ -394,6 +474,33 @@ const Bookshelf = () => {
                                         </label>
                                     ))}
                                 </div>
+
+                                {selectedApp.isCustom && (
+                                    <button
+                                        onClick={() => {
+                                            handleDeleteApp(selectedApp.id);
+                                            setSelectedApp(null);
+                                        }}
+                                        style={{
+                                            marginTop: '32px',
+                                            width: '100%',
+                                            padding: '16px',
+                                            background: 'transparent',
+                                            border: '1px solid #fecaca',
+                                            color: '#ef4444',
+                                            borderRadius: '16px',
+                                            fontSize: '0.8rem',
+                                            fontWeight: '800',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s'
+                                        }}
+                                        className="mono"
+                                        onMouseEnter={(e) => e.target.style.background = '#fef2f2'}
+                                        onMouseLeave={(e) => e.target.style.background = 'transparent'}
+                                    >
+                                        DELETE CUSTOM MODULE
+                                    </button>
+                                )}
                             </div>
 
                             <button
@@ -408,6 +515,154 @@ const Bookshelf = () => {
                             >
                                 {selectedApp.url ? 'LAUNCH MODULE' : 'INITIALIZE SYSTEM'}
                             </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Add App Modal */}
+            <AnimatePresence>
+                {isAddingApp && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            zIndex: 1500,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: 'rgba(0, 18, 32, 0.6)',
+                            backdropFilter: 'blur(20px)'
+                        }}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 60 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 60 }}
+                            className="nova-card"
+                            style={{
+                                width: '90%',
+                                maxWidth: '640px',
+                                borderRadius: '48px',
+                                padding: '64px',
+                                background: '#fff'
+                            }}
+                        >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '48px' }}>
+                                <div>
+                                    <h2 style={{ fontSize: '2.4rem', fontWeight: '900', color: '#001220', marginBottom: '8px' }}>New Module Deployed.</h2>
+                                    <p style={{ color: '#64748b', fontWeight: '500' }}>仲間のツールをあなたのエコシステムに統合します。</p>
+                                </div>
+                                <button onClick={() => setIsAddingApp(false)} style={{ background: '#f8fafc', border: 'none', width: '48px', height: '48px', borderRadius: '50%', cursor: 'pointer' }}>
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxHeight: '600px', overflowY: 'auto', paddingRight: '12px', paddingBottom: '24px' }}>
+                                <div className="input-group">
+                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>MODULE TITLE & COLOR</label>
+                                    <div style={{ display: 'flex', gap: '16px' }}>
+                                        <input
+                                            type="text"
+                                            placeholder="AppName Pro..."
+                                            value={newApp.title}
+                                            onChange={(e) => setNewApp({ ...newApp, title: e.target.value })}
+                                            style={{ flex: 1, padding: '20px 24px', borderRadius: '20px', border: '1px solid #f1f5f9', background: '#f8fafc', fontSize: '1rem', fontWeight: '600' }}
+                                        />
+                                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                            {['#6366f1', '#f43f5e', '#10b981', '#f59e0b', '#8b5cf6'].map(c => (
+                                                <button
+                                                    key={c}
+                                                    onClick={() => setNewApp({ ...newApp, color: c })}
+                                                    style={{ width: '32px', height: '32px', borderRadius: '50%', background: c, border: newApp.color === c ? '3px solid #001220' : 'none', cursor: 'pointer', transition: 'all 0.2s' }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="input-group">
+                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>VERCEL DEPLOYMENT URL</label>
+                                    <input
+                                        type="text"
+                                        placeholder="https://your-app.vercel.app"
+                                        value={newApp.url}
+                                        onChange={(e) => setNewApp({ ...newApp, url: e.target.value })}
+                                        style={{ width: '100%', padding: '20px 24px', borderRadius: '20px', border: '1px solid #f1f5f9', background: '#f8fafc', fontSize: '1rem', fontWeight: '600' }}
+                                    />
+                                </div>
+
+                                <div className="input-group">
+                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>CONNECTION DESIGN (連携モジュールの選択)</label>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                        <div>
+                                            <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>INPUT FROM:</span>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                                {[...managementApps, ...supportApps].map(app => (
+                                                    <button
+                                                        key={`in-${app.id}`}
+                                                        onClick={() => setNewApp({ ...newApp, inputs: newApp.inputs.includes(app.id) ? newApp.inputs.filter(id => id !== app.id) : [...newApp.inputs, app.id] })}
+                                                        style={{
+                                                            padding: '8px 16px',
+                                                            borderRadius: '12px',
+                                                            border: '1px solid',
+                                                            borderColor: newApp.inputs.includes(app.id) ? app.color : '#f1f5f9',
+                                                            background: newApp.inputs.includes(app.id) ? `${app.color}10` : '#fff',
+                                                            color: newApp.inputs.includes(app.id) ? app.color : '#64748b',
+                                                            fontSize: '0.75rem',
+                                                            fontWeight: '700',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        {app.title}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>OUTPUT TO:</span>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                                {[...managementApps, ...supportApps].map(app => (
+                                                    <button
+                                                        key={`out-${app.id}`}
+                                                        onClick={() => setNewApp({ ...newApp, outputs: newApp.outputs.includes(app.id) ? newApp.outputs.filter(id => id !== app.id) : [...newApp.outputs, app.id] })}
+                                                        style={{
+                                                            padding: '8px 16px',
+                                                            borderRadius: '12px',
+                                                            border: '1px solid',
+                                                            borderColor: newApp.outputs.includes(app.id) ? app.color : '#f1f5f9',
+                                                            background: newApp.outputs.includes(app.id) ? `${app.color}10` : '#fff',
+                                                            color: newApp.outputs.includes(app.id) ? app.color : '#64748b',
+                                                            fontSize: '0.75rem',
+                                                            fontWeight: '700',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        {app.title}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="input-group">
+                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>ARCHITECTURE NOTES</label>
+                                    <textarea
+                                        placeholder="詳細な連携ロジックをメモ..."
+                                        value={newApp.description}
+                                        onChange={(e) => setNewApp({ ...newApp, description: e.target.value })}
+                                        style={{ width: '100%', minHeight: '80px', padding: '20px 24px', borderRadius: '20px', border: '1px solid #f1f5f9', background: '#f8fafc', fontSize: '1rem', fontWeight: '600', resize: 'none' }}
+                                    />
+                                </div>
+
+                                <button onClick={handleAddApp} className="btn-primary" style={{ padding: '24px', borderRadius: '24px', background: '#001220', color: 'white', border: 'none', fontWeight: '800', cursor: 'pointer', marginTop: '16px' }}>
+                                    ACTIVATE MODULE
+                                </button>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}
@@ -440,7 +695,7 @@ const Bookshelf = () => {
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
                                 <div style={{ color: viewingApp.color }}>
-                                    <viewingApp.icon size={28} strokeWidth={2.5} />
+                                    {viewingApp.icon ? <viewingApp.icon size={28} strokeWidth={2.5} /> : <PlusCircle size={28} strokeWidth={2.5} />}
                                 </div>
                                 <div style={{ height: '32px', width: '1px', background: 'rgba(255,255,255,0.1)' }} />
                                 <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: '900' }}>{viewingApp.title}</h3>
