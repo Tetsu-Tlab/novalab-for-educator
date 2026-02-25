@@ -112,83 +112,84 @@ const Bookshelf = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                style={{ marginBottom: '120px', maxWidth: '800px' }}
+                style={{ marginBottom: '80px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '32px' }}
             >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-                    <div style={{ width: '48px', height: '2px', background: '#cbd5e1' }} />
-                    <span className="mono" style={{ fontSize: '0.75rem', fontWeight: '800', color: '#6366f1', textTransform: 'uppercase' }}>
-                        Nova Lab for Educators v5.0
-                    </span>
+                <div style={{ flex: 1, minWidth: '300px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                        <div style={{
+                            background: '#001220',
+                            color: 'white',
+                            padding: '6px 14px',
+                            borderRadius: '12px',
+                            fontSize: '0.65rem',
+                            fontWeight: '950',
+                            letterSpacing: '1px'
+                        }} className="mono">T-LAB PROJECT</div>
+                        <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#cbd5e1' }} />
+                        <span className="mono" style={{ fontSize: '0.65rem', fontWeight: '800', color: '#6366f1', textTransform: 'uppercase' }}>
+                            Nova Lab v5.0.4
+                        </span>
+                    </div>
+
+                    <h1 style={{
+                        fontSize: 'clamp(2rem, 5vw, 3rem)',
+                        fontWeight: '900',
+                        color: '#001220',
+                        lineHeight: '1.2',
+                        letterSpacing: '-0.04em',
+                        margin: 0
+                    }}>
+                        教育者の知性を、<br />
+                        <span style={{ color: '#6366f1' }}>加速させる翼 .</span>
+                    </h1>
                 </div>
 
-                <h1 style={{
-                    fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
-                    fontWeight: '900',
-                    color: '#001220',
-                    lineHeight: '1.1',
-                    marginBottom: '32px',
-                    letterSpacing: '-0.04em'
-                }}>
-                    教育者の知性を、<br />
-                    <span style={{ color: '#6366f1' }}>加速させる翼 .</span>
-                </h1>
-
-                <p style={{
-                    color: '#64748b',
-                    fontSize: '1.25rem',
-                    lineHeight: '1.8',
-                    fontWeight: '600',
-                    maxWidth: '600px'
-                }}>
-                    Nova Lab for Educatorsは、先生の創造性を解き放つためのOS。
-                    <br />
-                    各モジュールが有機的に連携し、子どもたちと向き合う「新しい時間」を創り出します。
-                </p>
-
-                {/* API Key Configuration */}
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    style={{ marginTop: '48px', display: 'flex', alignItems: 'center', gap: '16px' }}
-                >
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px' }}>
+                    {/* API Key Configuration - More Discrete */}
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px',
-                        background: 'rgba(99, 102, 241, 0.05)',
-                        padding: '14px 28px',
+                        background: 'rgba(255, 255, 255, 0.5)',
+                        padding: '10px 20px',
                         borderRadius: '100px',
-                        border: '1px solid rgba(99, 102, 241, 0.1)',
-                        width: 'fit-content',
+                        border: '1px solid #f1f5f9',
                         transition: 'all 0.3s',
-                        boxShadow: '0 10px 30px -10px rgba(99, 102, 241, 0.1)'
+                        backdropFilter: 'blur(10px)'
                     }} className="api-key-input-container">
-                        <Key size={18} color="#6366f1" />
+                        <Key size={14} color="#6366f1" />
                         <input
                             type="password"
-                            placeholder="Gemini APIキーを入力..."
+                            placeholder="Gemini APIキー..."
                             value={apiKey}
                             onChange={(e) => handleSaveApiKey(e.target.value)}
                             style={{
                                 background: 'none',
                                 border: 'none',
                                 outline: 'none',
-                                fontSize: '0.85rem',
+                                fontSize: '0.8rem',
                                 color: '#001220',
-                                width: '220px',
+                                width: '160px',
                                 fontWeight: '600',
                                 fontFamily: 'inherit'
                             }}
                         />
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: apiKey ? '#10b981' : '#f43f5e' }} />
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: apiKey ? '#10b981' : '#f43f5e' }} />
-                        <span className="mono" style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase' }}>
-                            {apiKey ? 'AIコア 稼働中' : 'AIコア 未設定'}
-                        </span>
-                    </div>
-                </motion.div>
+
+                    <p style={{
+                        color: '#94a3b8',
+                        fontSize: '0.85rem',
+                        fontWeight: '700',
+                        textAlign: 'right',
+                        margin: 0,
+                        maxWidth: '300px',
+                        lineHeight: '1.4'
+                    }} className="mono">
+                        ARCHITECTURED BY T-LAB STUDIO<br />
+                        FOR NEXT-GEN EDUCATION.
+                    </p>
+                </div>
             </motion.header>
 
             <motion.main
