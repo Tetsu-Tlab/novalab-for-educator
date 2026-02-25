@@ -1,17 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const Book = ({ title, color, icon: Icon, onClick }) => {
+const Book = ({ title, description, color, icon: Icon, onClick }) => {
   return (
     <motion.div
       layout
-      whileHover={{ y: -12 }}
+      whileHover={{ y: -12, boxShadow: `0 30px 60px -12px ${color}20` }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className="nova-card"
       style={{
         width: '100%',
-        minHeight: '220px',
+        minHeight: '240px',
         borderRadius: '32px',
         cursor: 'pointer',
         padding: '32px',
@@ -19,7 +19,9 @@ const Book = ({ title, color, icon: Icon, onClick }) => {
         flexDirection: 'column',
         justifyContent: 'space-between',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        background: 'rgba(255, 255, 255, 0.7)',
+        backdropFilter: 'blur(20px)'
       }}
     >
       {/* Decorative Blur Object */}
@@ -43,44 +45,51 @@ const Book = ({ title, color, icon: Icon, onClick }) => {
           marginBottom: '24px'
         }}>
           <div style={{
-            width: '56px',
-            height: '56px',
-            background: '#fff',
+            width: '60px',
+            height: '60px',
+            background: `${color}10`,
             borderRadius: '20px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: color,
-            boxShadow: '0 8px 16px -4px rgba(0,0,0,0.05)',
-            border: '1px solid rgba(0,0,0,0.03)'
+            boxShadow: `0 8px 16px -4px ${color}10`,
+            border: `1px solid ${color}20`
           }}>
-            <Icon size={28} strokeWidth={2.5} />
+            <Icon size={32} strokeWidth={2} />
           </div>
 
           <div className="mono" style={{
             fontSize: '0.65rem',
-            fontWeight: '700',
+            fontWeight: '800',
             color: color,
-            padding: '4px 12px',
-            background: `${color}10`,
+            padding: '6px 14px',
+            background: `${color}15`,
             borderRadius: '100px',
-            textTransform: 'uppercase'
+            textTransform: 'uppercase',
+            letterSpacing: '1px'
           }}>
-            Module active
+            ACTIVE
           </div>
         </div>
 
         <h3 style={{
-          fontSize: '1.4rem',
-          fontWeight: '800',
+          fontSize: '1.5rem',
+          fontWeight: '900',
           color: '#001220',
           lineHeight: '1.2',
-          marginBottom: '8px'
+          marginBottom: '10px',
+          letterSpacing: '-0.02em'
         }}>
           {title}
         </h3>
-        <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: '500' }}>
-          Educational Platform
+        <p style={{
+          fontSize: '0.9rem',
+          color: '#64748b',
+          fontWeight: '600',
+          lineHeight: '1.5'
+        }}>
+          {description || "教育支援プラットフォーム"}
         </p>
       </div>
 
@@ -88,11 +97,17 @@ const Book = ({ title, color, icon: Icon, onClick }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-        marginTop: 'auto'
+        marginTop: '24px'
       }}>
-        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: color }} />
-        <span className="mono" style={{ fontSize: '0.65rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>
-          Stable Release v4.0
+        <div style={{
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          background: color,
+          boxShadow: `0 0 10px ${color}`
+        }} />
+        <span className="mono" style={{ fontSize: '0.65rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase' }}>
+          VER 5.0.4 / OPTIMIZED
         </span>
       </div>
     </motion.div>

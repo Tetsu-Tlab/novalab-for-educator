@@ -90,18 +90,18 @@ const Bookshelf = () => {
     };
 
     const managementApps = [
-        { id: 'weekly', title: '週案作成', color: '#6366f1', icon: FileText },
-        { id: 'progress', title: '進捗管理', color: '#8b5cf6', icon: Clock },
-        { id: 'homework', title: '宿題配布', color: '#f59e0b', icon: CheckSquare },
-        { id: 'ocr-sync', title: '出張読取', color: '#f43f5e', icon: Link2 },
+        { id: 'weekly', title: '週案作成', description: '授業の羅針盤を創り、教育の質を高める', color: '#6366f1', icon: FileText },
+        { id: 'progress', title: '進捗管理', description: '学びの歩みを可視化し、最適な導きを支援', color: '#8b5cf6', icon: Clock },
+        { id: 'homework', title: '宿題配布', description: '家庭と学校をシームレスに繋ぐ架け橋', color: '#f59e0b', icon: CheckSquare },
+        { id: 'ocr-sync', title: '出張読取', description: '紙の情報を瞬時にデジタル知財へと変換', color: '#f43f5e', icon: Link2 },
     ];
 
     const supportApps = [
-        { id: 'curriculum', title: '授業づくり', color: '#10b981', icon: BookOpen },
-        { id: 'unit-plan', title: '単元計画', color: '#3b82f6', icon: Map, url: 'https://unit-plan.vercel.app/' },
-        { id: 'snapsync', title: 'SnapSync AI', color: '#06b6d4', icon: Zap, url: 'https://snapsync-ai.vercel.app/' },
-        { id: 'gradeshare', title: 'GradeShare Pro', color: '#f97316', icon: BarChart3, url: 'https://grade-share-pro-7qcq.vercel.app/' },
-        { id: 'tokugaku', title: '自立活動支援', color: '#fbbf24', icon: Activity, url: 'https://tokugaku-tsl3.vercel.app/' },
+        { id: 'curriculum', title: '授業づくり', description: '創造性と情熱を引き出す授業デザイン', color: '#10b981', icon: BookOpen },
+        { id: 'unit-plan', title: '単元計画', description: '長期的な視点で学びのストーリーを描く', color: '#3b82f6', icon: Map, url: 'https://unit-plan.vercel.app/' },
+        { id: 'snapsync', title: 'SnapSync AI', description: '教室の決定的な瞬間をAIで価値化', color: '#06b6d4', icon: Zap, url: 'https://snapsync-ai.vercel.app/' },
+        { id: 'gradeshare', title: 'GradeShare Pro', description: '評価の時間を子どもと向き合う感動へ', color: '#f97316', icon: BarChart3, url: 'https://grade-share-pro-7qcq.vercel.app/' },
+        { id: 'tokugaku', title: '自立活動支援', description: '一人ひとりの無限の可能性を解き放つ', color: '#fbbf24', icon: Activity, url: 'https://tokugaku-tsl3.vercel.app/' },
     ];
 
     return (
@@ -122,25 +122,27 @@ const Bookshelf = () => {
                 </div>
 
                 <h1 style={{
-                    fontSize: 'clamp(3rem, 8vw, 5rem)',
-                    fontWeight: '850',
+                    fontSize: 'clamp(2.5rem, 8vw, 4.5rem)',
+                    fontWeight: '900',
                     color: '#001220',
-                    lineHeight: '0.9',
-                    marginBottom: '32px'
+                    lineHeight: '1.1',
+                    marginBottom: '32px',
+                    letterSpacing: '-0.04em'
                 }}>
-                    Next-Gen Learning <br />
-                    <span style={{ color: '#6366f1' }}>Orchestration .</span>
+                    教育者の知性を、<br />
+                    <span style={{ color: '#6366f1' }}>加速させる翼 .</span>
                 </h1>
 
                 <p style={{
                     color: '#64748b',
                     fontSize: '1.25rem',
-                    lineHeight: '1.6',
-                    fontWeight: '500'
+                    lineHeight: '1.8',
+                    fontWeight: '600',
+                    maxWidth: '600px'
                 }}>
-                    先生の知性と情熱を加速させる、次世代の教育OS。
+                    Nova Lab for Educatorsは、先生の創造性を解き放つためのOS。
                     <br />
-                    各モジュールをシームレスに連携し、創造的な教育時間を生み出します。
+                    各モジュールが有機的に連携し、子どもたちと向き合う「新しい時間」を創り出します。
                 </p>
 
                 {/* API Key Configuration */}
@@ -148,23 +150,24 @@ const Bookshelf = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
-                    style={{ marginTop: '32px', display: 'flex', alignItems: 'center', gap: '16px' }}
+                    style={{ marginTop: '48px', display: 'flex', alignItems: 'center', gap: '16px' }}
                 >
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px',
                         background: 'rgba(99, 102, 241, 0.05)',
-                        padding: '12px 24px',
+                        padding: '14px 28px',
                         borderRadius: '100px',
                         border: '1px solid rgba(99, 102, 241, 0.1)',
                         width: 'fit-content',
-                        transition: 'all 0.3s'
+                        transition: 'all 0.3s',
+                        boxShadow: '0 10px 30px -10px rgba(99, 102, 241, 0.1)'
                     }} className="api-key-input-container">
-                        <Key size={16} color="#6366f1" />
+                        <Key size={18} color="#6366f1" />
                         <input
                             type="password"
-                            placeholder="Gemini API Key..."
+                            placeholder="Gemini APIキーを入力..."
                             value={apiKey}
                             onChange={(e) => handleSaveApiKey(e.target.value)}
                             style={{
@@ -181,8 +184,8 @@ const Bookshelf = () => {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: apiKey ? '#10b981' : '#f43f5e' }} />
-                        <span className="mono" style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
-                            {apiKey ? 'AI Core Active' : 'AI Core Required'}
+                        <span className="mono" style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase' }}>
+                            {apiKey ? 'AIコア 稼働中' : 'AIコア 未設定'}
                         </span>
                     </div>
                 </motion.div>
@@ -197,7 +200,7 @@ const Bookshelf = () => {
                 <motion.section variants={itemVariants} style={{ marginBottom: '120px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '40px' }}>
                         <h2 className="mono" style={{ fontSize: '0.9rem', fontWeight: '800', color: '#001220', textTransform: 'uppercase' }}>
-                            01. Core Operations
+                            01. Core Operations / 基幹業務
                         </h2>
                         <div style={{ flex: 1, height: '1px', background: '#f1f5f9' }} />
                     </div>
@@ -221,7 +224,7 @@ const Bookshelf = () => {
                 <motion.section variants={itemVariants} style={{ marginBottom: '120px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '40px' }}>
                         <h2 className="mono" style={{ fontSize: '0.9rem', fontWeight: '800', color: '#001220', textTransform: 'uppercase' }}>
-                            02. Creative Delivery
+                            02. Creative Delivery / 教育創造
                         </h2>
                         <div style={{ flex: 1, height: '1px', background: '#f1f5f9' }} />
                     </div>
@@ -266,7 +269,7 @@ const Bookshelf = () => {
                             }}
                         >
                             <PlusCircle size={40} strokeWidth={1.5} />
-                            <span className="mono" style={{ fontSize: '0.75rem', fontWeight: '800', marginTop: '16px' }}>DEPLOY MODULE</span>
+                            <span className="mono" style={{ fontSize: '0.8rem', fontWeight: '900', marginTop: '16px', color: '#6366f1' }}>モジュールを追加</span>
                         </motion.div>
                     </div>
                 </motion.section>
@@ -275,7 +278,7 @@ const Bookshelf = () => {
                 <motion.section variants={itemVariants}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '40px' }}>
                         <h2 className="mono" style={{ fontSize: '0.9rem', fontWeight: '800', color: '#001220', textTransform: 'uppercase' }}>
-                            03. Ecosystem Utilities
+                            03. Ecosystem Utilities / 支援ツール
                         </h2>
                         <div style={{ flex: 1, height: '1px', background: '#f1f5f9' }} />
                     </div>
@@ -309,8 +312,8 @@ const Bookshelf = () => {
                             </motion.div>
                             <div className="nova-card" style={{ padding: '40px', borderRadius: '40px', background: '#001220', color: '#fff' }}>
                                 <div className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', opacity: 0.5, marginBottom: '8px' }}>SYSTEM HEALTH</div>
-                                <div style={{ fontSize: '1.8rem', fontWeight: '800', color: '#6366f1' }}>OPTIMIZED</div>
-                                <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '8px' }}>All systems operational.</p>
+                                <div style={{ fontSize: '1.8rem', fontWeight: '800', color: '#6366f1' }}>稼働中</div>
+                                <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '8px', fontWeight: '600' }}>すべてのシステムが正常に動作しています。</p>
                             </div>
                         </div>
                     </div>
@@ -385,14 +388,15 @@ const Bookshelf = () => {
                                     <selectedApp.icon size={40} strokeWidth={2.5} />
                                 </div>
                                 <div>
-                                    <div className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: selectedApp.color, opacity: 0.8, marginBottom: '4px' }}>UNIT ID: {selectedApp.id?.toUpperCase()}</div>
-                                    <h2 style={{ fontSize: '2.2rem', color: '#001220', fontWeight: '900', lineHeight: 1 }}>{selectedApp.title}</h2>
+                                    <div className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: selectedApp.color, opacity: 0.8, marginBottom: '4px' }}>VERSION 5.0 / MODULE ID: {selectedApp.id?.toUpperCase()}</div>
+                                    <h2 style={{ fontSize: '2.5rem', color: '#001220', fontWeight: '900', lineHeight: 1.1 }}>{selectedApp.title}</h2>
+                                    <p style={{ marginTop: '8px', color: '#64748b', fontWeight: '600' }}>{selectedApp.description || "次世代教育プラットフォーム"}</p>
                                 </div>
                             </div>
 
                             <div style={{ marginBottom: '48px' }}>
                                 <h3 className="mono" style={{ fontSize: '0.8rem', marginBottom: '24px', color: '#64748b', fontWeight: '800' }}>
-                                    // WORKFLOW CONFIGURATION
+                                    // ARCHITECTURE & WORKFLOW
                                 </h3>
 
                                 {selectedApp.isCustom && (selectedApp.description || (selectedApp.inputs?.length > 0) || (selectedApp.outputs?.length > 0)) && (
@@ -408,7 +412,7 @@ const Bookshelf = () => {
                                         <div style={{ position: 'absolute', top: 0, right: 0, width: '100px', height: '100px', background: selectedApp.color, opacity: 0.05, filter: 'blur(30px)' }} />
 
                                         <div className="mono" style={{ fontSize: '0.65rem', color: selectedApp.color, fontWeight: '800', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <Workflow size={14} /> ARCHITECTURE BLUEPRINT
+                                            <Workflow size={14} /> システム連携の設計 (ブループリント)
                                         </div>
 
                                         {(selectedApp.inputs?.length > 0 || selectedApp.outputs?.length > 0) && (
@@ -491,8 +495,8 @@ const Bookshelf = () => {
                                             border: '1px solid #fecaca',
                                             color: '#ef4444',
                                             borderRadius: '16px',
-                                            fontSize: '0.8rem',
-                                            fontWeight: '800',
+                                            fontSize: '0.85rem',
+                                            fontWeight: '900',
                                             cursor: 'pointer',
                                             transition: 'all 0.3s'
                                         }}
@@ -500,7 +504,7 @@ const Bookshelf = () => {
                                         onMouseEnter={(e) => e.target.style.background = '#fef2f2'}
                                         onMouseLeave={(e) => e.target.style.background = 'transparent'}
                                     >
-                                        DELETE CUSTOM MODULE
+                                        このカスタムモジュールを削除
                                     </button>
                                 )}
                             </div>
@@ -513,9 +517,17 @@ const Bookshelf = () => {
                                     }
                                 }}
                                 className="btn-primary"
-                                style={{ width: '100%', padding: '24px', fontSize: '1.1rem', background: selectedApp.color }}
+                                style={{
+                                    width: '100%',
+                                    padding: '24px',
+                                    fontSize: '1.2rem',
+                                    background: selectedApp.color,
+                                    fontWeight: '900',
+                                    borderRadius: '24px',
+                                    boxShadow: `0 20px 40px -10px ${selectedApp.color}40`
+                                }}
                             >
-                                {selectedApp.url ? 'LAUNCH MODULE' : 'INITIALIZE SYSTEM'}
+                                {selectedApp.url ? 'モジュールを起動' : 'システムを初期化'}
                             </button>
                         </motion.div>
                     </motion.div>
@@ -555,8 +567,8 @@ const Bookshelf = () => {
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '48px' }}>
                                 <div>
-                                    <h2 style={{ fontSize: '2.4rem', fontWeight: '900', color: '#001220', marginBottom: '8px' }}>New Module Deployed.</h2>
-                                    <p style={{ color: '#64748b', fontWeight: '500' }}>仲間のツールをあなたのエコシステムに統合します。</p>
+                                    <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#001220', marginBottom: '12px', letterSpacing: '-0.02em' }}>新しい翼を広げる.</h2>
+                                    <p style={{ color: '#64748b', fontWeight: '600', fontSize: '1.1rem' }}>仲間のツールをあなたのエコシステムに統合しましょう。</p>
                                 </div>
                                 <button onClick={() => setIsAddingApp(false)} style={{ background: '#f8fafc', border: 'none', width: '48px', height: '48px', borderRadius: '50%', cursor: 'pointer' }}>
                                     <X size={24} />
@@ -565,11 +577,11 @@ const Bookshelf = () => {
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxHeight: '600px', overflowY: 'auto', paddingRight: '12px', paddingBottom: '24px' }}>
                                 <div className="input-group">
-                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>MODULE TITLE & COLOR</label>
+                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>MODULE TITLE & COLOR / 名称とテーマカラー</label>
                                     <div style={{ display: 'flex', gap: '16px' }}>
                                         <input
                                             type="text"
-                                            placeholder="AppName Pro..."
+                                            placeholder="アプリ名を入力..."
                                             value={newApp.title}
                                             onChange={(e) => setNewApp({ ...newApp, title: e.target.value })}
                                             style={{ flex: 1, padding: '20px 24px', borderRadius: '20px', border: '1px solid #f1f5f9', background: '#f8fafc', fontSize: '1rem', fontWeight: '600' }}
@@ -587,10 +599,10 @@ const Bookshelf = () => {
                                 </div>
 
                                 <div className="input-group">
-                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>VERCEL DEPLOYMENT URL</label>
+                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>VERCEL DEPLOYMENT URL / 連携URL</label>
                                     <input
                                         type="text"
-                                        placeholder="https://your-app.vercel.app"
+                                        placeholder="https://..."
                                         value={newApp.url}
                                         onChange={(e) => setNewApp({ ...newApp, url: e.target.value })}
                                         style={{ width: '100%', padding: '20px 24px', borderRadius: '20px', border: '1px solid #f1f5f9', background: '#f8fafc', fontSize: '1rem', fontWeight: '600' }}
@@ -601,8 +613,8 @@ const Bookshelf = () => {
                                     <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>CONNECTION DESIGN (連携モジュールの選択)</label>
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                         <div>
-                                            <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>INPUT FROM:</span>
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                            <span style={{ fontSize: '0.8rem', fontWeight: '800', color: '#94a3b8', display: 'block', marginBottom: '12px' }}>INPUT FROM (データを受け取る):</span>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                                                 {[...managementApps, ...supportApps].map(app => (
                                                     <button
                                                         key={`in-${app.id}`}
@@ -625,8 +637,8 @@ const Bookshelf = () => {
                                             </div>
                                         </div>
                                         <div>
-                                            <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>OUTPUT TO:</span>
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                            <span style={{ fontSize: '0.8rem', fontWeight: '800', color: '#94a3b8', display: 'block', marginBottom: '12px' }}>OUTPUT TO (データを渡す):</span>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                                                 {[...managementApps, ...supportApps].map(app => (
                                                     <button
                                                         key={`out-${app.id}`}
@@ -652,17 +664,17 @@ const Bookshelf = () => {
                                 </div>
 
                                 <div className="input-group">
-                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>ARCHITECTURE NOTES</label>
+                                    <label className="mono" style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', display: 'block', marginBottom: '12px' }}>ARCHITECTURE NOTES / 設計メモ</label>
                                     <textarea
-                                        placeholder="詳細な連携ロジックをメモ..."
+                                        placeholder="他のアプリとどう繋げたいか、ビジョンをメモしてください..."
                                         value={newApp.description}
                                         onChange={(e) => setNewApp({ ...newApp, description: e.target.value })}
-                                        style={{ width: '100%', minHeight: '80px', padding: '20px 24px', borderRadius: '20px', border: '1px solid #f1f5f9', background: '#f8fafc', fontSize: '1rem', fontWeight: '600', resize: 'none' }}
+                                        style={{ width: '100%', minHeight: '100px', padding: '20px 24px', borderRadius: '20px', border: '1px solid #f1f5f9', background: '#f8fafc', fontSize: '1rem', fontWeight: '600', resize: 'none' }}
                                     />
                                 </div>
 
-                                <button onClick={handleAddApp} className="btn-primary" style={{ padding: '24px', borderRadius: '24px', background: '#001220', color: 'white', border: 'none', fontWeight: '800', cursor: 'pointer', marginTop: '16px' }}>
-                                    ACTIVATE MODULE
+                                <button onClick={handleAddApp} className="btn-primary" style={{ padding: '24px', borderRadius: '24px', background: '#001220', color: 'white', border: 'none', fontWeight: '900', cursor: 'pointer', marginTop: '16px', fontSize: '1.1rem' }}>
+                                    モジュールを有効化する
                                 </button>
                             </div>
                         </motion.div>
@@ -705,7 +717,7 @@ const Bookshelf = () => {
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '48px' }}>
                                 <div>
                                     <div className="mono" style={{ fontSize: '0.7rem', color: '#6366f1', fontWeight: '800', marginBottom: '8px' }}>SYSTEM SETTINGS</div>
-                                    <h2 style={{ fontSize: '2.4rem', fontWeight: '900', color: '#001220' }}>Control Center.</h2>
+                                    <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#001220', letterSpacing: '-0.03em' }}>統合管理パネル.</h2>
                                 </div>
                                 <button onClick={() => setIsSettingsOpen(false)} style={{ background: '#f8fafc', border: 'none', width: '48px', height: '48px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <X size={24} />
@@ -718,23 +730,23 @@ const Bookshelf = () => {
                                     <div className="mono" style={{ fontSize: '0.65rem', marginBottom: '12px', color: '#64748b', fontWeight: '800' }}>AI CORE STATUS</div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                         <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: apiKey ? '#10b981' : '#f43f5e' }} />
-                                        <span style={{ fontWeight: '700', color: '#001220' }}>{apiKey ? 'CONNECTED' : 'NOT CONFIGURED'}</span>
+                                        <span style={{ fontWeight: '800', color: '#001220' }}>{apiKey ? 'オンライン / 正常' : 'オフライン / 未設定'}</span>
                                     </div>
-                                    <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '12px', lineHeight: 1.5 }}>
-                                        Gemini APIキーはブラウザのローカルストレージに安全に保存され、AI連携機能に使用されます。
+                                    <p style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '12px', lineHeight: 1.6, fontWeight: '600' }}>
+                                        Gemini AIコアは現在正常に動作しています。教育データの分析や生成プロセスが利用可能です。
                                     </p>
                                 </div>
 
                                 {/* Storage Info */}
                                 <div style={{ padding: '24px', borderRadius: '24px', background: '#f8fafc', border: '1px solid #f1f5f9' }}>
-                                    <div className="mono" style={{ fontSize: '0.65rem', marginBottom: '12px', color: '#64748b', fontWeight: '800' }}>LOCAL ARCHIVE</div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                        <span style={{ fontSize: '0.9rem', color: '#64748b' }}>Custom Modules:</span>
-                                        <span style={{ fontWeight: '700' }}>{customApps.length} units</span>
+                                    <div className="mono" style={{ fontSize: '0.65rem', marginBottom: '12px', color: '#64748b', fontWeight: '800' }}>LOCAL ARCHIVE / 内部データ</div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                                        <span style={{ fontSize: '0.9rem', color: '#64748b', fontWeight: '600' }}>カスタムモジュール:</span>
+                                        <span style={{ fontWeight: '800' }}>{customApps.length} ユニット</span>
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <span style={{ fontSize: '0.9rem', color: '#64748b' }}>App Connections:</span>
-                                        <span style={{ fontWeight: '700' }}>{Object.keys(connections).length} active</span>
+                                        <span style={{ fontSize: '0.9rem', color: '#64748b', fontWeight: '600' }}>有効な連携設定:</span>
+                                        <span style={{ fontWeight: '800' }}>{Object.keys(connections).length} アクティブ</span>
                                     </div>
                                 </div>
 
@@ -742,19 +754,19 @@ const Bookshelf = () => {
                                 <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     <button
                                         onClick={() => {
-                                            if (confirm('すべてのカスタムモジュールと連携設定をリセットしますか？')) {
+                                            if (confirm('すべてのカスタムモジュールと連携設定をリセットしますか？この操作は取り消せません。')) {
                                                 localStorage.clear();
                                                 window.location.reload();
                                             }
                                         }}
-                                        style={{ width: '100%', padding: '20px', borderRadius: '20px', border: '1px solid #fee2e2', color: '#ef4444', fontWeight: '800', background: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        style={{ width: '100%', padding: '20px', borderRadius: '20px', border: '1px solid #fee2e2', color: '#ef4444', fontWeight: '900', background: '#fff', cursor: 'pointer', transition: 'all 0.2s', fontSize: '1rem' }}
                                         onMouseEnter={(e) => e.target.style.background = '#fef2f2'}
                                         onMouseLeave={(e) => e.target.style.background = '#fff'}
                                     >
-                                        FACTORY RESET SYSTEM
+                                        システム全体を初期化する
                                     </button>
-                                    <p style={{ textAlign: 'center', fontSize: '0.75rem', color: '#94a3b8' }}>
-                                        System v5.0.4 "Antigravity" // Build: 2026.02
+                                    <p style={{ textAlign: 'center', fontSize: '0.75rem', color: '#94a3b8', fontWeight: '700' }}>
+                                        Nova Lab for Educators v5.0.4 "ANTIGRAVITY"
                                     </p>
                                 </div>
                             </div>
@@ -805,14 +817,14 @@ const Bookshelf = () => {
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: '12px',
-                                    fontWeight: '800',
+                                    fontWeight: '900',
                                     fontSize: '0.9rem',
                                     transition: 'all 0.3s'
                                 }}
                                 onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
                                 onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.05)'}
                             >
-                                <X size={20} strokeWidth={2.5} /> TERMINATE PORTAL
+                                <X size={20} strokeWidth={2.5} /> ポータルを閉じる
                             </button>
                         </div>
                         <div style={{ flex: 1, position: 'relative' }}>
