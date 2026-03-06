@@ -58,7 +58,7 @@ const Platform = () => {
     const sidebarItems = [
         { id: 'dashboard', label: 'ダッシュボード', icon: LayoutDashboard },
         { id: 'management', label: '校務管理', icon: FileText },
-        { id: 'creative', label: '教育創造', icon: Zap },
+        { id: 'creative', label: '教育活動', icon: Zap },
         { id: 'calendar', label: '行事予定', icon: CalendarIcon },
         { id: 'settings', label: '設定・連携', icon: Settings },
     ];
@@ -151,7 +151,7 @@ const Platform = () => {
                                         ))}
                                     </div>
 
-                                    <h3 className="section-title" style={{ marginTop: '48px' }}>教育創造ツール</h3>
+                                    <h3 className="section-title" style={{ marginTop: '48px' }}>教育活動ツール</h3>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
                                         {supportApps.map(app => (
                                             <Book key={app.id} {...app} onClick={() => setSelectedApp(app)} />
@@ -213,6 +213,125 @@ const Platform = () => {
                                             Gemini AIが現在の校務をサポートする準備ができています。
                                         </p>
                                     </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {activeTab === 'management' && (
+                        <motion.div
+                            key="management"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h3 className="section-title">校務管理</h3>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+                                {managementApps.map(app => (
+                                    <Book key={app.id} {...app} onClick={() => setSelectedApp(app)} />
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {activeTab === 'creative' && (
+                        <motion.div
+                            key="creative"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h3 className="section-title">教育活動</h3>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+                                {supportApps.map(app => (
+                                    <Book key={app.id} {...app} onClick={() => setSelectedApp(app)} />
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {activeTab === 'calendar' && (
+                        <motion.div
+                            key="calendar"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h3 className="section-title">行事予定</h3>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                                <Calendar
+                                    calendarId={localStorage.getItem('calendarId') || ''}
+                                    onSaveId={(id) => localStorage.setItem('calendarId', id)}
+                                    schedule={[]}
+                                />
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {activeTab === 'settings' && (
+                        <motion.div
+                            key="settings"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h3 className="section-title">設定・連携</h3>
+                            <div style={{ maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                                <div className="nova-card" style={{ padding: '32px' }}>
+                                    <h4 style={{ fontWeight: '800', fontSize: '1rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <Key size={18} color="var(--accent-primary)" />
+                                        Gemini API キー
+                                    </h4>
+                                    <p style={{ fontSize: '0.85rem', color: 'var(--text-dim)', marginBottom: '16px' }}>
+                                        AI機能を利用するためのGoogle Gemini APIキーを設定します。
+                                    </p>
+                                    <input
+                                        type="password"
+                                        value={apiKey}
+                                        onChange={e => {
+                                            setApiKey(e.target.value);
+                                            localStorage.setItem('geminiApiKey', e.target.value);
+                                        }}
+                                        placeholder="AIzaSy..."
+                                        style={{
+                                            width: '100%', padding: '12px 16px',
+                                            borderRadius: '12px', border: '1.5px solid #e2e8f0',
+                                            outline: 'none', fontSize: '0.95rem', fontWeight: '600',
+                                            boxSizing: 'border-box', fontFamily: 'monospace'
+                                        }}
+                                    />
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
+                                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: apiKey ? '#10b981' : '#f43f5e' }} />
+                                        <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-dim)' }}>
+                                            {apiKey ? 'APIキー設定済み' : 'APIキー未設定'}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="nova-card" style={{ padding: '32px' }}>
+                                    <h4 style={{ fontWeight: '800', fontSize: '1rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <CalendarIcon size={18} color="var(--accent-primary)" />
+                                        Google カレンダー連携
+                                    </h4>
+                                    <p style={{ fontSize: '0.85rem', color: 'var(--text-dim)', marginBottom: '16px' }}>
+                                        行事予定タブで表示するカレンダーIDを設定します。
+                                    </p>
+                                    <input
+                                        type="text"
+                                        defaultValue={localStorage.getItem('calendarId') || ''}
+                                        onBlur={e => localStorage.setItem('calendarId', e.target.value)}
+                                        placeholder="xxx@group.calendar.google.com"
+                                        style={{
+                                            width: '100%', padding: '12px 16px',
+                                            borderRadius: '12px', border: '1.5px solid #e2e8f0',
+                                            outline: 'none', fontSize: '0.95rem', fontWeight: '600',
+                                            boxSizing: 'border-box'
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </motion.div>
