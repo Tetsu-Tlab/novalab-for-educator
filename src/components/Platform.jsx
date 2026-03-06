@@ -31,8 +31,28 @@ const Platform = () => {
     const [viewingApp, setViewingApp] = useState(null);
     const [activeTab, setActiveTab] = useState('dashboard');
     const [apiKey, setApiKey] = useState(localStorage.getItem('geminiApiKey') || '');
-    const [customApps] = useState(JSON.parse(localStorage.getItem('customApps') || '[]'));
+    const [customApps, setCustomApps] = useState(JSON.parse(localStorage.getItem('customApps') || '[]'));
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [isAddingApp, setIsAddingApp] = useState(false);
+    const [newAppForm, setNewAppForm] = useState({ title: '', url: '', description: '', category: 'myapps', color: '#6366f1' });
+
+    const COLOR_PRESETS = ['#6366f1', '#8b5cf6', '#3b82f6', '#06b6d4', '#10b981', '#f59e0b'];
+
+    const handleAddApp = () => {
+        if (!newAppForm.title || !newAppForm.url) return;
+        const newApp = { id: `custom-${Date.now()}`, ...newAppForm, icon: Link2 };
+        const updated = [...customApps, newApp];
+        setCustomApps(updated);
+        localStorage.setItem('customApps', JSON.stringify(updated));
+        setIsAddingApp(false);
+        setNewAppForm({ title: '', url: '', description: '', category: 'myapps', color: '#6366f1' });
+    };
+
+    const handleDeleteApp = (id) => {
+        const updated = customApps.filter(a => a.id !== id);
+        setCustomApps(updated);
+        localStorage.setItem('customApps', JSON.stringify(updated));
+    };
 
     // Sidebar items mapping
     const sidebarItems = [
@@ -106,7 +126,7 @@ const Platform = () => {
                             <Search size={18} color="var(--text-dim)" />
                             <input type="text" placeholder="機能を検索..." style={{ background: 'none', border: 'none', outline: 'none', fontWeight: '600' }} />
                         </div>
-                        <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={() => setIsAddingApp(true)}>
                             <PlusCircle size={18} />
                             <span>新規作成</span>
                         </button>
@@ -137,6 +157,32 @@ const Platform = () => {
                                             <Book key={app.id} {...app} onClick={() => setSelectedApp(app)} />
                                         ))}
                                     </div>
+
+                                    {customApps.length > 0 && (
+                                        <>
+                                            <h3 className="section-title" style={{ marginTop: '48px' }}>マイアプリ</h3>
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+                                                {customApps.map(app => (
+                                                    <div key={app.id} style={{ position: 'relative' }}>
+                                                        <Book {...app} icon={Link2} onClick={() => setSelectedApp(app)} />
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); handleDeleteApp(app.id); }}
+                                                            style={{
+                                                                position: 'absolute', top: '12px', right: '12px',
+                                                                width: '28px', height: '28px', borderRadius: '50%',
+                                                                background: 'rgba(0,0,0,0.15)', border: 'none',
+                                                                color: 'white', cursor: 'pointer', display: 'flex',
+                                                                alignItems: 'center', justifyContent: 'center',
+                                                                zIndex: 10
+                                                            }}
+                                                        >
+                                                            <X size={14} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
 
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
@@ -173,6 +219,107 @@ const Platform = () => {
                     )}
                 </AnimatePresence>
             </main>
+
+            {/* アプリ追加モーダル */}
+            <AnimatePresence>
+                {isAddingApp && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed', inset: 0, zIndex: 1000,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            background: 'rgba(0, 18, 32, 0.4)', backdropFilter: 'blur(12px)'
+                        }}
+                        onClick={() => setIsAddingApp(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0, y: 40 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.95, opacity: 0, y: 40 }}
+                            className="nova-card"
+                            style={{ width: '90%', maxWidth: '480px', borderRadius: '32px', padding: '40px', background: '#fff' }}
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px' }}>
+                                <h2 style={{ fontSize: '1.5rem', fontWeight: '900' }}>アプリを追加</h2>
+                                <button onClick={() => setIsAddingApp(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)' }}>
+                                    <X size={22} />
+                                </button>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                <div>
+                                    <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-dim)', display: 'block', marginBottom: '6px' }}>アプリ名 *</label>
+                                    <input
+                                        type="text"
+                                        value={newAppForm.title}
+                                        onChange={e => setNewAppForm(f => ({ ...f, title: e.target.value }))}
+                                        placeholder="例: 成績管理ツール"
+                                        style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1.5px solid #e2e8f0', outline: 'none', fontSize: '0.95rem', fontWeight: '600', boxSizing: 'border-box' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-dim)', display: 'block', marginBottom: '6px' }}>URL *</label>
+                                    <input
+                                        type="url"
+                                        value={newAppForm.url}
+                                        onChange={e => setNewAppForm(f => ({ ...f, url: e.target.value }))}
+                                        placeholder="https://xxx.vercel.app"
+                                        style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1.5px solid #e2e8f0', outline: 'none', fontSize: '0.95rem', fontWeight: '600', boxSizing: 'border-box' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-dim)', display: 'block', marginBottom: '6px' }}>説明文</label>
+                                    <input
+                                        type="text"
+                                        value={newAppForm.description}
+                                        onChange={e => setNewAppForm(f => ({ ...f, description: e.target.value }))}
+                                        placeholder="簡単な説明（任意）"
+                                        style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1.5px solid #e2e8f0', outline: 'none', fontSize: '0.95rem', fontWeight: '600', boxSizing: 'border-box' }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-dim)', display: 'block', marginBottom: '8px' }}>カラー</label>
+                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                        {COLOR_PRESETS.map(c => (
+                                            <button
+                                                key={c}
+                                                onClick={() => setNewAppForm(f => ({ ...f, color: c }))}
+                                                style={{
+                                                    width: '32px', height: '32px', borderRadius: '50%', background: c,
+                                                    border: newAppForm.color === c ? '3px solid #1e293b' : '3px solid transparent',
+                                                    cursor: 'pointer', transition: 'transform 0.15s',
+                                                    transform: newAppForm.color === c ? 'scale(1.2)' : 'scale(1)'
+                                                }}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '12px', marginTop: '28px' }}>
+                                <button
+                                    className="btn-primary"
+                                    style={{ flex: 1, padding: '16px', opacity: (!newAppForm.title || !newAppForm.url) ? 0.5 : 1 }}
+                                    onClick={handleAddApp}
+                                    disabled={!newAppForm.title || !newAppForm.url}
+                                >
+                                    追加する
+                                </button>
+                                <button
+                                    className="glass-card"
+                                    style={{ padding: '16px 24px', border: '1px solid #e2e8f0', fontWeight: '700' }}
+                                    onClick={() => setIsAddingApp(false)}
+                                >
+                                    キャンセル
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Modal & Overlays would go here - simplified for initial refresh */}
             <AnimatePresence>
