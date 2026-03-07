@@ -38,6 +38,21 @@ const Platform = () => {
 
     const COLOR_PRESETS = ['#6366f1', '#8b5cf6', '#3b82f6', '#06b6d4', '#10b981', '#f59e0b'];
 
+    // 子アプリからの「別アプリを開く」要求をリッスン
+    useEffect(() => {
+        const allApps = [...managementApps, ...supportApps];
+        const handleMessage = (event) => {
+            const { type, appId } = event.data || {};
+            if (type === 'TLAB_OPEN_APP' && appId) {
+                const target = allApps.find(a => a.id === appId);
+                if (target) setSelectedApp(target);
+            }
+        };
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleAddApp = () => {
         if (!newAppForm.title || !newAppForm.url) return;
         const newApp = { id: `custom-${Date.now()}`, ...newAppForm, icon: Link2 };
@@ -71,6 +86,7 @@ const Platform = () => {
 
     const supportApps = [
         { id: 'unit-plan', title: '単元計画', description: '物語としての学びを構築', color: '#3b82f6', icon: Map, url: 'https://unit-plan.vercel.app/' },
+        { id: 'lesson-plan', title: '指導案作成', description: '最高水準の1時間をデザイン', color: '#0d9488', icon: FileText, url: 'https://shidouan.vercel.app/' },
         { id: 'snapsync', title: '瞬間記録 AI', description: '教室の奇跡を資産化', color: '#06b6d4', icon: Zap, url: 'https://snapsync-ai.vercel.app/' },
         { id: 'tokugaku', title: '特別支援', description: '個別の可能性を最大化', color: '#fbbf24', icon: Activity, url: 'https://tokugaku-tsl3.vercel.app/' },
     ];
