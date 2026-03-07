@@ -64,8 +64,8 @@ const Platform = () => {
     ];
 
     const managementApps = [
-        { id: 'weekly', title: '週案作成', description: '授業のの羅針盤を設計', color: '#6366f1', icon: FileText },
-        { id: 'progress', title: '学習進捗', description: '学びの歩みを可視化', color: '#8b5cf6', icon: Clock },
+        { id: 'weekly', title: '週案作成', description: '授業の羅針盤を設計', color: '#6366f1', icon: FileText },
+        { id: 'progress', title: '学習進捗', description: '学びの歩みを可視化', color: '#8b5cf6', icon: Clock, url: 'https://shinchoku-kanri-woad.vercel.app/' },
         { id: 'newsletter', title: '学級通信', description: '想いを届ける虹の架け橋', color: '#10b981', icon: BookOpen, url: 'https://gakkyuu-tuushin.vercel.app/' },
     ];
 
@@ -440,45 +440,105 @@ const Platform = () => {
                 )}
             </AnimatePresence>
 
-            {/* Modal & Overlays would go here - simplified for initial refresh */}
+            {/* アプリ iframe 全画面パネル */}
             <AnimatePresence>
                 {selectedApp && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
                         style={{
                             position: 'fixed',
                             inset: 0,
-                            zIndex: 1000,
+                            zIndex: 2000,
                             display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            background: 'rgba(0, 18, 32, 0.4)',
-                            backdropFilter: 'blur(12px)'
+                            flexDirection: 'column',
+                            background: '#0f172a'
                         }}
                     >
-                        <motion.div
-                            initial={{ scale: 0.95, opacity: 0, y: 40 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.95, opacity: 0, y: 40 }}
-                            className="nova-card"
-                            style={{ width: '90%', maxWidth: '540px', borderRadius: '40px', padding: '48px', background: '#fff' }}
-                        >
-                            <h2 style={{ fontSize: '2rem', fontWeight: '900', marginBottom: '16px' }}>{selectedApp.title}</h2>
-                            <p style={{ color: 'var(--text-dim)', marginBottom: '32px', fontWeight: '600' }}>{selectedApp.description}</p>
-                            <div style={{ display: 'flex', gap: '16px' }}>
-                                <button className="btn-primary" style={{ flex: 1, padding: '20px' }} onClick={() => {
-                                    if (selectedApp.url) window.open(selectedApp.url, '_blank');
-                                    setSelectedApp(null);
+                        {/* ヘッダーバー */}
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '10px 20px',
+                            background: '#1e293b',
+                            borderBottom: '1px solid #334155',
+                            flexShrink: 0,
+                            gap: '16px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                <button
+                                    onClick={() => setSelectedApp(null)}
+                                    style={{
+                                        display: 'flex', alignItems: 'center', gap: '8px',
+                                        background: 'rgba(255,255,255,0.1)', border: 'none',
+                                        color: 'white', padding: '8px 16px', borderRadius: '10px',
+                                        cursor: 'pointer', fontWeight: '700', fontSize: '0.9rem'
+                                    }}
+                                >
+                                    <ChevronRight size={16} style={{ transform: 'rotate(180deg)' }} />
+                                    ポータルへ戻る
+                                </button>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: selectedApp.color || '#6366f1' }} />
+                                    <span style={{ color: 'white', fontWeight: '800', fontSize: '1rem' }}>{selectedApp.title}</span>
+                                </div>
+                                {/* APIキー状態表示 */}
+                                <div style={{
+                                    display: 'flex', alignItems: 'center', gap: '6px',
+                                    background: apiKey ? 'rgba(16,185,129,0.15)' : 'rgba(244,63,94,0.15)',
+                                    padding: '4px 12px', borderRadius: '20px'
                                 }}>
-                                    起動する
-                                </button>
-                                <button className="glass-card" style={{ padding: '20px', border: '1px solid #e2e8f0', fontWeight: '700' }} onClick={() => setSelectedApp(null)}>
-                                    閉じる
-                                </button>
+                                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: apiKey ? '#10b981' : '#f43f5e' }} />
+                                    <span style={{ fontSize: '0.75rem', fontWeight: '700', color: apiKey ? '#10b981' : '#f43f5e' }}>
+                                        {apiKey ? 'AI稼働中' : 'APIキー未設定'}
+                                    </span>
+                                </div>
                             </div>
-                        </motion.div>
+                            <button
+                                onClick={() => selectedApp.url && window.open(
+                                    `${selectedApp.url}?apiKey=${encodeURIComponent(apiKey)}`, '_blank'
+                                )}
+                                disabled={!selectedApp.url}
+                                style={{
+                                    display: 'flex', alignItems: 'center', gap: '6px',
+                                    background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
+                                    color: '#94a3b8', padding: '6px 14px', borderRadius: '8px',
+                                    cursor: 'pointer', fontSize: '0.8rem', fontWeight: '600'
+                                }}
+                            >
+                                <Link2 size={14} /> 別タブで開く
+                            </button>
+                        </div>
+
+                        {/* iframe 本体 */}
+                        {selectedApp.url ? (
+                            <iframe
+                                src={`${selectedApp.url}?apiKey=${encodeURIComponent(apiKey)}`}
+                                style={{ flex: 1, border: 'none', width: '100%', background: '#fff' }}
+                                title={selectedApp.title}
+                                onLoad={(e) => {
+                                    // postMessage でもAPIキーを送信（useSharedDataBridge対応アプリ向け）
+                                    try {
+                                        e.target.contentWindow?.postMessage(
+                                            { type: 'ANTIGRAVITY_SYNC', apiKey },
+                                            '*'
+                                        );
+                                    } catch (_) {}
+                                }}
+                            />
+                        ) : (
+                            <div style={{
+                                flex: 1, display: 'flex', flexDirection: 'column',
+                                alignItems: 'center', justifyContent: 'center', color: '#64748b'
+                            }}>
+                                <Zap size={48} style={{ marginBottom: '16px', opacity: 0.3 }} />
+                                <p style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '8px' }}>このアプリは準備中です</p>
+                                <p style={{ fontSize: '0.9rem' }}>URLが設定されていません</p>
+                            </div>
+                        )}
                     </motion.div>
                 )}
             </AnimatePresence>
