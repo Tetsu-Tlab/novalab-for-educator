@@ -87,7 +87,6 @@ const Platform = () => {
     const supportApps = [
         { id: 'unit-plan', title: '単元計画', description: '物語としての学びを構築', color: '#3b82f6', icon: Map, url: 'https://unit-plan.vercel.app/' },
         { id: 'lesson-plan', title: '指導案作成', description: '最高水準の1時間をデザイン', color: '#0d9488', icon: FileText, url: 'https://shidouan.vercel.app/' },
-        { id: 'snapsync', title: '瞬間記録 AI', description: '教室の奇跡を資産化', color: '#06b6d4', icon: Zap, url: 'https://snapsync-ai.vercel.app/' },
         { id: 'tokugaku', title: '特別支援', description: '個別の可能性を最大化', color: '#fbbf24', icon: Activity, url: 'https://tokugaku-tsl3.vercel.app/' },
     ];
 
@@ -277,6 +276,17 @@ const Platform = () => {
                             transition={{ duration: 0.5 }}
                         >
                             <h3 className="section-title">行事予定</h3>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+                                <Book
+                                    id="schedule-import"
+                                    title="スケジュール入力"
+                                    description="自動でスケジュール管理"
+                                    color="#06b6d4"
+                                    icon={CalendarIcon}
+                                    url="https://snapsync-ai.vercel.app/"
+                                    onClick={() => setSelectedApp({ id: 'schedule-import', title: 'スケジュール入力', description: '自動でスケジュール管理', color: '#06b6d4', icon: CalendarIcon, url: 'https://snapsync-ai.vercel.app/' })}
+                                />
+                            </div>
                             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                                 <Calendar
                                     calendarId={localStorage.getItem('calendarId') || ''}
